@@ -78,7 +78,7 @@
     } else if(e.keyCode == 40) {
       var cur = this.history.indexOf(this.value);
       var sel = cur - 1;
-      if(this.history.length > sel && sel > -1) {
+      if(new_history.indexOf(this.history[i]) == -1 && !this.history[i].match(/^\s*$/)) {
         this.value = this.history[sel];
       } else if(sel == -1) {
         this.value = "";
