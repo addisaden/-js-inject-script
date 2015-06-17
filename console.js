@@ -30,9 +30,9 @@
     if(typeof e == "object") {
       var result = []
       for(var i in e) {
-        result.push(i + ": " + e[i].toString());
+        result.push(i + ": " + (e[i] || "null").toString());
       }
-      result = e.toString() + " { " + result.join(", ") + " }";
+      result = (e || "null").toString() + " { " + result.join(", ") + " }";
       this.appendChild(document.createTextNode(result));
     } else {
       this.appendChild(document.createTextNode(e));
