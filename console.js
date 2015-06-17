@@ -108,7 +108,8 @@
         } else if(this.value.match(/^\s*exit\s*$/)) {
           document.body.removeChild(master);
         } else if(this.value.match(/^\s*(.*)\.\s*$/)) {
-          output.log("methods of " + this.value);
+          output.log(">> " + this.value);
+          output.log("inspect: " + this.value);
           var m = eval.call(this, this.value.match(/^\s*(.*)\.\s*$/)[1]);
           var o = [];
           for(var i = m; i; i = Object.getPrototypeOf(i)) {
@@ -116,7 +117,7 @@
           }
           for(var i = o.shift(); i; i = o.shift()) {
             output.log("-----");
-            output.log((Object.getOwnPropertyNames(i)).join(", "));
+            output.log((Object.getOwnPropertyNames(i)).sort().join(", "));
           }
         } else {
           output.log(">> " + this.value);
