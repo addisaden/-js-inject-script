@@ -8,7 +8,7 @@
     "margin: 0;" +
     "width: 40em;" +
     "max-width: 100%;" +
-    "height: 30em;" +
+    "height: 26.5em;" +
     "max-height: 100%;" +
     "background-color: none;" +
     "color: #0c0;" +
