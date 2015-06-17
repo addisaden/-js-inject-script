@@ -8,6 +8,8 @@
     "margin: 0;" +
     "width: 40em;" +
     "max-width: 100%;" +
+    "height: 30em;" +
+    "max-height: 100%;" +
     "background-color: none;" +
     "color: #0c0;" +
     "font-family: monospace;" +
@@ -17,6 +19,9 @@
   var output = document.createElement("div");
   output.setAttribute("style",
     "background-color: #000;" +
+    "height: 20em;" +
+    "overflow-y: scroll;" +
+    "max-height: 80%;" +
     "margin: 1em;" +
     "padding: 1em;"
     );
@@ -35,6 +40,7 @@
     var br = document.createElement("br");
     br.setAttribute("style", "margin-bottom: 0.5em;");
     this.appendChild(br);
+    this.scrollTo(0, this.scrollHeight);
   };
 
   output.clear = function() {
@@ -49,6 +55,8 @@
   input_div.setAttribute("style",
     "background-color: #000;" +
     "margin: 1em;" +
+    "overflow-y: scroll;" +
+    "max-height: 20%;" +
     "padding: 1em;"
     );
   master.appendChild(input_div);
@@ -78,7 +86,7 @@
     } else if(e.keyCode == 40) {
       var cur = this.history.indexOf(this.value);
       var sel = cur - 1;
-      if(new_history.indexOf(this.history[i]) == -1 && !this.history[i].match(/^\s*$/)) {
+      if(this.history.length > sel && sel > -1) {
         this.value = this.history[sel];
       } else if(sel == -1) {
         this.value = "";
@@ -89,7 +97,7 @@
         // make history unique
         var new_history = [];
         for(var i = 0; i < this.history.length; i++) {
-          if(new_history.indexOf(this.history[i]) == -1) {
+          if(new_history.indexOf(this.history[i]) == -1 && !this.history[i].match(/^\s*$/)) {
             new_history.push(this.history[i]);
           }
         }
@@ -101,8 +109,15 @@
           document.body.removeChild(master);
         } else if(this.value.match(/^\s*(.*)\.\s*$/)) {
           output.log("methods of " + this.value);
-          var m = this.value.match(/^\s*(.*)\.\s*$/)[1];
-          output.log(eval.call(this, "Object.getOwnPropertyNames(" + m + ")").join(", "));
+          var m = eval.call(this, this.value.match(/^\s*(.*)\.\s*$/)[1]);
+          var o = [];
+          for(var i = m; i; i = Object.getPrototypeOf(i)) {
+            o.unshift(i);
+          }
+          for(var i = o.shift(); i; i = o.shift()) {
+            output.log("-----");
+            output.log((Object.getOwnPropertyNames(i)).join(", "));
+          }
         } else {
           output.log(">> " + this.value);
           output.log(eval.call(this, this.value));
